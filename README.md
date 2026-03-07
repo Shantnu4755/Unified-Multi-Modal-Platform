@@ -8,34 +8,45 @@ This project is a simple **AI Studio**:
 Image / Voice tools are **under development**.
 
 ---
-
-## Screenshots (add your own)
-
-Put screenshots here:
-
-- `docs/images/studio-home.png`
-- `docs/images/rag-documents.png`
-- `docs/images/qdrant-collections.png`
-
-Then they will render in GitHub:
-
-<p>
-  <img src="./docs/images/studio-home.png" alt="AI Studio Home" width="900" />
-</p>
-
-<p>
-  <img src="./docs/images/rag-documents.png" alt="RAG Documents" width="900" />
-</p>
-
-<p>
-  <img src="./docs/images/qdrant-collections.png" alt="Qdrant Collections" width="900" />
-</p>
-
----
-
 ## Run the project (step-by-step)
 
-### 0) Clone this repository
+### Option A) Run everything with Docker (recommended)
+
+This runs:
+
+- frontend
+- backend
+- qdrant
+- redis
+- nginx reverse proxy
+
+Start:
+
+```bash
+docker compose up --build
+```
+
+Open:
+
+- `http://localhost` (via nginx)
+
+#### View logs (without terminal)
+
+Use **Docker Desktop**:
+
+- Open **Containers**
+- Click your compose stack
+- Click `backend` (or `frontend` / `nginx`)
+- Open the **Logs** tab
+
+#### View logs (optional terminal)
+
+```bash
+docker compose logs -f backend
+docker compose logs -f frontend
+```
+
+### Clone this repository
 
 ```bash
 git clone https://github.com/Shantnu4755/Unified-Multi-Modal-Platform.git
