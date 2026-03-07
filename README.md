@@ -19,9 +19,17 @@ Put screenshots here:
 
 Then they will render in GitHub:
 
-![AI Studio Home](docs/images/studio-home.png)
-![RAG Documents](docs/images/rag-documents.png)
-![Qdrant Collections](docs/images/qdrant-collections.png)
+<p>
+  <img src="./docs/images/studio-home.png" alt="AI Studio Home" width="900" />
+</p>
+
+<p>
+  <img src="./docs/images/rag-documents.png" alt="RAG Documents" width="900" />
+</p>
+
+<p>
+  <img src="./docs/images/qdrant-collections.png" alt="Qdrant Collections" width="900" />
+</p>
 
 ---
 
