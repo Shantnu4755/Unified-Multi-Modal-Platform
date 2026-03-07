@@ -25,29 +25,6 @@ Then they will render in GitHub:
 
 ---
 
-## Challenges & Fixes (real problems we hit)
-
-### 1) Qdrant vector dimension mismatch (384 vs 768)
-
-**What happened (simple):**
-
-- Embeddings are just long lists of numbers.
-- Qdrant collections are created with a fixed vector size.
-
-When we switched embedding models to `nomic-embed-text:latest`, the embedding size became **768**.
-But an older Qdrant collection was created for **384**.
-So Qdrant rejected inserts / searches with errors like “expected 384, got 768”.
-
-**How we solved it:**
-
-- The backend now uses **dimension-based collection names** like:
-  - `documents_768`
-- When the embedding dimension changes, the backend automatically uses the correct collection.
-
-This prevents silent failures and makes upgrades safer.
-
----
-
 ## Run the project (step-by-step)
 
 ### 0) Clone this repository
@@ -167,18 +144,17 @@ RAG chat history is saved **per document** in your browser (localStorage).
 
 ---
 
-## How RAG works (like a small kid explanation)
+## How RAG works
 
-Imagine your PDF is a long story book.
+RAG (Retrieval-Augmented Generation) answers questions by grounding the model on your uploaded documents.
 
-- We **cut the book into small pieces** (chunks).
-- Each chunk is turned into a **number list** (embedding).
-- We put those embeddings into **Qdrant** (a special search box).
-- When you ask a question:
-  - We turn your question into numbers too.
-  - We ask Qdrant: “which chunks look most similar?”
-  - We send the best chunks to the AI model.
-  - The model answers using those chunks.
+At a high level:
+
+- The document is split into chunks.
+- Each chunk is converted into an embedding vector.
+- Embeddings are stored in Qdrant for similarity search.
+- When you ask a question, the question is embedded and used to retrieve the most relevant chunks.
+- The retrieved chunks are sent as context to the LLM to generate a final answer.
 
 ---
 
@@ -190,7 +166,7 @@ Imagine your PDF is a long story book.
 flowchart TD
   A[Upload PDF] --> B[Extract text]
   B --> C[Split into chunks]
-  C --> D[Create embeddings (nomic-embed-text)]
+  C --> D[Create embeddings using embedding model]
   D --> E[Store vectors in Qdrant]
   C --> F[Store chunk text in SQLite]
   E --> G[Document status = completed]
@@ -261,6 +237,29 @@ The backend stores:
 
 - `documents` table: file metadata + processing status
 - `document_chunks` table: chunk text + `document_id` + chunk index
+
+---
+
+## Challenges & Fixes (real problems we hit)
+
+### 1) Qdrant vector dimension mismatch (384 vs 768)
+
+**What happened (simple):**
+
+- Embeddings are just long lists of numbers.
+- Qdrant collections are created with a fixed vector size.
+
+When we switched embedding models to `nomic-embed-text:latest`, the embedding size became **768**.
+But an older Qdrant collection was created for **384**.
+So Qdrant rejected inserts / searches with errors like “expected 384, got 768”.
+
+**How we solved it:**
+
+- The backend now uses **dimension-based collection names** like:
+  - `documents_768`
+- When the embedding dimension changes, the backend automatically uses the correct collection.
+
+This prevents silent failures and makes upgrades safer.
 
 ---
 
