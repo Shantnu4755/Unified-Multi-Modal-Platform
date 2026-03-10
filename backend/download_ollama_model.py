@@ -80,6 +80,7 @@ def download_and_install_model(model_name: str, tag: str) -> None:
     print(f"Manifest downloaded. Layers: {len(layers)}")
     if config_digest:
         print(f"Config digest: {config_digest}")
+        #We are in collab
 
     # Download config blob (required)
     if config_digest and config_digest.startswith("sha256:"):
